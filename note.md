@@ -27,6 +27,17 @@
 * `$ heroku git:remote -a <appname>-production`
 * create git production branch
 * create `Procfile` to run Puma web server
+* `$ rails g controller ui`
+* `mkdir -p app/views/ui`
+* `echo "Capstone Site Under Construction -- check back soon" > app/views/ui/index.html.erb`
+* add default route in config/routes.rb:
+
+```ruby
+  get '/ui'  => 'ui#index'
+  get '/ui#' => 'ui#index'
+  root "ui#index"
+```
+
 * `$ git push production production:master`
 
 ## 6. Deploy a branch of your application to staging
