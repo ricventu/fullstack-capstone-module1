@@ -26,6 +26,7 @@
 * `$ heroku create [appname] --remote production`
 * `$ heroku git:remote -a <appname>-production`
 * create git production branch
+* create `Procfile` to run Puma web server
 * `$ git push production production:master`
 
 ## 6. Deploy a branch of your application to staging
