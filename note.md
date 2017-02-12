@@ -28,8 +28,19 @@
 * create git production branch
 * create `Procfile` to run Puma web server
 * `$ rails g controller ui`
-* `mkdir -p app/views/ui`
-* `echo "Capstone Site Under Construction -- check back soon" > app/views/ui/index.html.erb`
+* `$ rm spec/controllers/ui_controller_spec.rb`
+* `$ mkdir -p app/views/ui`
+* `$ echo "Capstone Site Under Construction -- check back soon" > app/views/ui/index.html.erb`
+* make the connection between controller action and associated view
+  app/controllers/application_controller.rb:
+
+```ruby
+class ApplicationController < ActionController::API
+  #make the connection between controller action and associated view
+  include ActionController::ImplicitRender
+end
+```
+
 * add default route in config/routes.rb:
 
 ```ruby
