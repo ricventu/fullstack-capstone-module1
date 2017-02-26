@@ -5,6 +5,7 @@
 * `$ rails-api new . -T -d postgresql`
 * edit Gemfile
 * `$ bundle`
+* `$ rails g rspec:install`
 
 ## 2. Configure the application for use with a relational and MongoDB database
 
@@ -12,10 +13,34 @@
 * `$ rake db:create`
 * `$ rake db:migrate`
 
+* edit Gemfile
+
+```Gemfile
+gem 'pg', '~>0.19', '>=0.19.0'
+gem 'puma', '~>3.6', '>=3.6.0', :platforms=>:ruby
+gem 'mongoid', '~>5.1', '>=5.1.5'
+```
+
+* `$ bundle`
+* `$ rails g mongoid:config`
+* edit config/mongoid.yml
+* edit config/application.rb
+
+```ruby
+Mongoid.load!('./config/mongoid.yml')
+#which default ORM are we using with scaffold
+#add  --orm mongoid, or active_record 
+#    to rails generate cmd line to be specific
+config.generators {|g| g.orm :active_record}
+#config.generators {|g| g.orm :mongoid}
+```
+
 ## 3. Provision (free) MongoDB databases for use in deployment
 
 * create [mLab](https://mlab.com) MongoDB database
   * create db username and password
+
+* `rails g scaffold Bar name --orm mongoid --no-request-specs --no-routing-specs --no-controller-specs`
 
 ## 4. Provision (free) Heroku and PostgreSQL resources for use in deployment.
 
@@ -59,8 +84,9 @@ end
 * `$ git push staging staging:master`
 
 
+## 7. (30 min) Implement an end-to-end thread from the API to the relational database for a resource called Cities
 
 ## TODO
 
-`$ rails g rspec:install`
+
 
