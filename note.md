@@ -168,6 +168,7 @@ json.url bar_url(bar, format: :json)
   root "ui#index"
 ```
 
+* `heroku run rake --trace db:migrate --remote production`
 * `$ git push production production:master`
 
 ## 6. Deploy a branch of your application to staging
@@ -175,10 +176,10 @@ json.url bar_url(bar, format: :json)
 * `$ heroku create [appname] --remote staging`
 * `$ heroku git:remote -a <appname>-staging`
 * create git staging branch
+* `heroku run rake --trace db:migrate --remote staging`
 * `$ git push staging staging:master`
 
-
-## 7. (30 min) Implement an end-to-end thread from the API to the relational database for a resource called Cities
+## 7. Implement an end-to-end thread from the API to the relational database for a resource called Cities
 
 * The resource will have an id:integer (default) and name:string property
 * The resource name must be accessable via the /api/cities URI
