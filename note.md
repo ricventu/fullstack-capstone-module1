@@ -36,6 +36,17 @@ config.generators {|g| g.orm :active_record}
 
 * `$ rails g rspec:install`
 * `$ rails g rspec:request APIDevelopment`
+* .rspec:
+
+```text
+--color
+--require spec_helper
+--format documentation
+--no-fail-fast
+```
+
+* `$ rake`
+
 
 #### RDBMS
 
