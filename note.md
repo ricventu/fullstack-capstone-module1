@@ -41,6 +41,7 @@ config.generators {|g| g.orm :active_record}
   * create db username and password
 
 * `rails g scaffold Bar name --orm mongoid --no-request-specs --no-routing-specs --no-controller-specs`
+* `rm spec/models/bar_spec.rb`
 
 ## 4. Provision (free) Heroku and PostgreSQL resources for use in deployment.
 
