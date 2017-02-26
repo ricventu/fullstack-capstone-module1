@@ -143,11 +143,12 @@ json.url bar_url(bar, format: :json)
 ## 3. Provision (free) MongoDB databases for use in deployment
 
 * create [mLab](https://mlab.com) MongoDB database
-  * create db username and password
+* create db username and password
 
 ## 4. Provision (free) Heroku and PostgreSQL resources for use in deployment.
 
 * create [Heroku](https://www.heroku.com) account
+* add MLAB_URI var
 
 ## 5. Deploy a branch of your application to production that displays information indicating the site is under construction
 
