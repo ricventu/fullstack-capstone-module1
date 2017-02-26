@@ -179,7 +179,10 @@ json.url bar_url(bar, format: :json)
 
 ## 7. (30 min) Implement an end-to-end thread from the API to the relational database for a resource called Cities
 
-## TODO
+* The resource will have an id:integer (default) and name:string property
+* The resource name must be accessable via the /api/cities URI
+* The resource must be backed by a RDBMS using ActiveRecord
+* The resource will be deployed with a city with the name Baltimore
 
 
 
