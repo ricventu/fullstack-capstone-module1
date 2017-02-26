@@ -18,4 +18,4 @@ production:
   adapter: postgresql
   encoding: unicode
   pool: 5
-  url: <%= ENV['MODULE1-SOLUTION_DATABASE_URL'] %>
+  url: <%= ENV['MODULE1_SOLUTION_DATABASE_URL'] %>
