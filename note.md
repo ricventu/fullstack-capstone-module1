@@ -186,5 +186,6 @@ json.url bar_url(bar, format: :json)
 * The resource must be backed by a RDBMS using ActiveRecord
 * The resource will be deployed with a city with the name Baltimore
 
+## Require HTTPS for production and staging site
 
-
+* config/production.rb: `config.force_ssl = true``
