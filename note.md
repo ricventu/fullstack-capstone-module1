@@ -185,6 +185,75 @@ json.url bar_url(bar, format: :json)
 * The resource name must be accessable via the /api/cities URI
 * The resource must be backed by a RDBMS using ActiveRecord
 * The resource will be deployed with a city with the name Baltimore
+* A client performing a GET of of the /api/cities resource must at least get one city with name Baltimore
+
+## 8. Implement an end-to-end thread from the API to the MongoDB database for a resource called States.
+
+* The resource will have an id:BSON::ObjectId (default) and name:string property
+* The resource name must be accessible via the /api/states URI
+* The resource must be backed by MongoDB using Mongoid
+* The resource will be deployed with a state with the name Maryland
+* A client performing a GET of of the /api/states resource must at least get one state with name Maryland
 
 
+* `$ rails g scaffold State name --orm mongoid --no-request-specs --no-routing-specs --no-controller-specs`
+* `$ rm spec/models/state_spec.rb`
+* edit models/state.rb to include `create_at` and `updated_at`, non include by default in MongoDB
 
+```ruby
+class State
+  include Mongoid::Document
+  include Mongoid::Timestamps
+  field :name, type: String
+end
+```
+
+* add default route in config/routes.rb with scope */api*:
+
+```ruby
+scope :api, defaults: {format: :json}  do
+  resources :states, except: [:new, :edit]
+end
+```
+
+* in the states_controller.rb delegate jbuilder for the view
+
+```ruby
+  def index
+    @states = State.all
+    #render json: @states
+  end
+
+  def show
+    # render json: @state
+  end
+
+  def create
+    @state = State.new(state_params)
+
+    if @state.save
+      #render json: @state, status: :created, location: @state
+      render :show, status: :created, location: @state
+    else
+      render json: @state.errors, status: :unprocessable_entity
+    end
+  end
+```
+
+* to view mongoid id as string, change the _state.json.jbuilder :
+
+```ruby
+#json.extract! bar, :id, :name, :created_at, :updated_at
+json.id bar.id.to_s
+json.name bar.name
+json.created_at bar.created_at
+json.updated_at bar.updated_at
+json.url bar_url(bar, format: :json)
+```
+
+* `$ rspec -e MongoDB -fd`
+
+
+## 9. Configure your staging and production sites to require HTTPS for web communications
+
+* config/production.rb: `config.force_ssl = true`
