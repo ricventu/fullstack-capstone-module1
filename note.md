@@ -47,99 +47,6 @@ config.generators {|g| g.orm :active_record}
 
 * `$ rake`
 
-
-#### RDBMS
-
-* `$ rails-api g scaffold Foo name --orm active_record --no-request-specs --no-routing-specs --no-controller-specs`
-* `$ rm spec/models/foo_spec.rb`
-* `$ rake db:migrate`
-* make the connection between controller action and associated view in
-  app/controllers/application_controller.rb:
-
-```ruby
-class ApplicationController < ActionController::API
-  #make the connection between controller action and associated view
-  include ActionController::ImplicitRender
-end
-```
-
-* add default route in config/routes.rb with scope */api*:
-
-```ruby
-scope :api, defaults: {format: :json}  do
-  resources :foos, except: [:new, :edit]
-end
-```
-
-* Unfortunately when the controller was generated, it didn't take into account
-  that the view was there. And so, you see how it's explicitly calling render on
-  an object instead of render on a particular view type? So, what we want to do
-  is comment this out, because if we left it in, it would just be explicitly
-  calling to JSON on the object, and not passing to the view. Which we would
-  lose our chance to control how that's going to get marshaled. We want to be
-  able to do that on the first couple of methods.
-  foos_controller:
-
-```ruby
-  def index
-    @foos = Foo.all
-    # render json: @foos
-  end
-
-  def show
-    # render json: @foo
-  end
-
-  def create
-    @foo = Foo.new(foo_params)
-
-    if @foo.save
-      #render json: @foo, status: :created, location: @foo
-      render :show, status: :created, location: @foo
-    else
-      render json: @foo.errors, status: :unprocessable_entity
-  end
-```
-
-* `$ rspec -e RDBMS -fd`
-
-#### MongoDB
-
-* `$ rails g scaffold Bar name --orm mongoid --no-request-specs --no-routing-specs --no-controller-specs`
-* `$ rm spec/models/bar_spec.rb`
-* edit models/bar.rb to include `create_at` and `updated_at`, non include by default in MongoDB
-
-```ruby
-class Bar
-  include Mongoid::Document
-  include Mongoid::Timestamps
-  field :name, type: String
-end
-```
-
-* add default route in config/routes.rb with scope */api*:
-
-```ruby
-scope :api, defaults: {format: :json}  do
-  resources :foos, except: [:new, :edit]
-  resources :bars, except: [:new, :edit]
-end
-```
-
-* in the controller delegate jbuilder for the view
-* to view mongoid id ad string, fix the _bar.json.jbuilder
-
-```ruby
-#json.extract! bar, :id, :name, :created_at, :updated_at
-json.id bar.id.to_s
-json.name bar.name
-json.created_at bar.created_at
-json.updated_at bar.updated_at
-json.url bar_url(bar, format: :json)
-```
-
-* `$ rspec -e MongoDB -fd`
-
 ## 3. Provision (free) MongoDB databases for use in deployment
 
 * create [mLab](https://mlab.com) MongoDB database
@@ -148,7 +55,7 @@ json.url bar_url(bar, format: :json)
 ## 4. Provision (free) Heroku and PostgreSQL resources for use in deployment.
 
 * create [Heroku](https://www.heroku.com) account
-* add MLAB_URI var
+* add MLAB_URI var to Heroku with url of mLab database
 
 ## 5. Deploy a branch of your application to production that displays information indicating the site is under construction
 
@@ -186,6 +93,59 @@ json.url bar_url(bar, format: :json)
 * The resource must be backed by a RDBMS using ActiveRecord
 * The resource will be deployed with a city with the name Baltimore
 * A client performing a GET of of the /api/cities resource must at least get one city with name Baltimore
+
+* `$ rails-api g scaffold City name --orm active_record --no-request-specs --no-routing-specs --no-controller-specs`
+* `$ rm spec/models/city_spec.rb`
+* `$ rake db:migrate`
+* make the connection between controller action and associated view in
+  app/controllers/application_controller.rb:
+
+```ruby
+class ApplicationController < ActionController::API
+  #make the connection between controller action and associated view
+  include ActionController::ImplicitRender
+end
+```
+
+* add default route in config/routes.rb with scope */api*:
+
+```ruby
+scope :api, defaults: {format: :json}  do
+  resources :cities, except: [:new, :edit]
+end
+```
+
+* Unfortunately when the controller was generated, it didn't take into account
+  that the view was there. And so, you see how it's explicitly calling render on
+  an object instead of render on a particular view type? So, what we want to do
+  is comment this out, because if we left it in, it would just be explicitly
+  calling to JSON on the object, and not passing to the view. Which we would
+  lose our chance to control how that's going to get marshaled. We want to be
+  able to do that on the first couple of methods.
+  foos_controller:
+
+```ruby
+  def index
+    @foos = City.all
+    # render json: @cities
+  end
+
+  def show
+    # render json: @cities
+  end
+
+  def create
+    @city = City.new(city_params)
+
+    if @city.save
+      #render json: @city, status: :created, location: @city
+      render :show, status: :created, location: @city
+    else
+      render json: @city.errors, status: :unprocessable_entity
+  end
+```
+
+* `$ rspec -e RDBMS -fd`
 
 ## 8. Implement an end-to-end thread from the API to the MongoDB database for a resource called States.
 
