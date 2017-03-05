@@ -7,20 +7,12 @@
 ## 2. Configure the application for use with a relational and MongoDB database
 
 * edit Gemfile
-
-```Gemfile
-gem 'pg', '~>0.19', '>=0.19.0'
-gem 'puma', '~>3.6', '>=3.6.0', :platforms=>:ruby
-gem 'mongoid', '~>5.1', '>=5.1.5'
-```
-
 * `$ bundle`
-
 * edit config/database.yml
 * `$ rake db:create`
-
-* `$ rails g mongoid:config`
 * edit config/mongoid.yml
+* `$ rails g mongoid:config`
+
 * edit config/application.rb
 
 ```ruby
@@ -200,7 +192,7 @@ end
   end
 ```
 
-* to view mongoid id as string, change the _state.json.jbuilder :
+* to view mongoid id as string, change the app/views/states/_state.json.jbuilder :
 
 ```ruby
 #json.extract! bar, :id, :name, :created_at, :updated_at
